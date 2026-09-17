@@ -1,0 +1,59 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights: 100%|██████████| 339/339 [00:00<00:00, 4028.77it/s]
+model 7b | oracle expected reward/episode 105.0 | random ~-6.4
+zeroshot  {"reward": 19.92, "reward_post": 13.17, "optimal_rate": 0.18}  (6s)
+[W915 16:37:11.616301183 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 1275068416 bytes (free: 14090240, total: 23686938624).
+[W915 16:37:16.892307507 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 1734344704 bytes (free: 620167168, total: 23686938624).
+[W915 16:37:19.045915532 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 1912602624 bytes (free: 1559691264, total: 23686938624).
+[W915 16:37:23.542253016 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2136997888 bytes (free: 1219952640, total: 23686938624).
+[W915 16:37:27.393788190 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2342518784 bytes (free: 766967808, total: 23686938624).
+[W915 16:37:31.636550750 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2556428288 bytes (free: 385286144, total: 23686938624).
+[W915 16:37:33.860702649 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2648702976 bytes (free: 2643918848, total: 23686938624).
+[W915 16:37:35.229806226 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2755657728 bytes (free: 2562129920, total: 23686938624).
+[W915 16:37:38.639045612 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2877292544 bytes (free: 2455175168, total: 23686938624).
+[W915 16:37:40.052719567 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2998927360 bytes (free: 2333540352, total: 23686938624).
+[W915 16:37:42.888181344 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2998927360 bytes (free: 2335637504, total: 23686938624).
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/ubuntu/fly-critic/flycritic/llm/eval_baselines.py", line 14, in <module>
+    t0 = time.time(); r = evaluate_baseline(kind, env, llm, episodes=a.episodes); res[kind] = r
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/flycritic/llm/baselines.py", line 49, in evaluate_baseline
+    _, tl = llm(prompts); a = tl.argmax(1)
+            ^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/flycritic/llm/features.py", line 73, in __call__
+    h, tl = self._forward([texts[i] for i in miss])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/flycritic/llm/features.py", line 48, in _forward
+    out = self.model(**enc, output_hidden_states=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 465, in forward
+    logits = self.lm_head(hidden_states[:, slice_indices, :])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.79 GiB. GPU 0 has a total capacity of 22.06 GiB of which 2.18 GiB is free. Including non-PyTorch memory, this process has 19.88 GiB memory in use. Of the allocated memory 16.67 GiB is allocated by PyTorch, and 2.91 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)

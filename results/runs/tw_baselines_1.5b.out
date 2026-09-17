@@ -1,0 +1,83 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  34%|███▎      | 114/338 [00:00<00:00, 1076.63it/s]Loading weights:  71%|███████   | 239/338 [00:00<00:00, 1174.92it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 1307.35it/s]
+model 1.5b | oracle expected reward/episode 105.0 | random ~-6.4
+zeroshot  {"reward": 19.73, "reward_post": 12.7, "optimal_rate": 0.18}  (4s)
+[W915 16:35:03.095211631 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 1998585856 bytes (free: 1163329536, total: 23686938624).
+[W915 16:35:07.026780439 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 2776629248 bytes (free: 2385969152, total: 23686938624).
+[W915 16:35:12.358162424 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 3370123264 bytes (free: 595001344, total: 23686938624).
+[W915 16:35:15.775646758 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 3749707776 bytes (free: 2067202048, total: 23686938624).
+[W915 16:35:19.624414374 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 4192206848 bytes (free: 374800384, total: 23686938624).
+[W915 16:35:22.847228765 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 4508876800 bytes (free: 3191275520, total: 23686938624).
+[W915 16:35:26.311158998 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 4859101184 bytes (free: 2224488448, total: 23686938624).
+[W915 16:35:29.034880022 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 5165285376 bytes (free: 1198981120, total: 23686938624).
+[W915 16:35:33.005861369 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 5460983808 bytes (free: 337051648, total: 23686938624).
+[W915 16:35:36.864571149 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 5635047424 bytes (free: 5116461056, total: 23686938624).
+[W915 16:35:39.847268689 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 5869928448 bytes (free: 4785111040, total: 23686938624).
+[W915 16:35:42.929228646 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 6050283520 bytes (free: 4359389184, total: 23686938624).
+[W915 16:35:45.062408598 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 6264193024 bytes (free: 4011261952, total: 23686938624).
+[W915 16:35:49.454646719 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 6463422464 bytes (free: 3610705920, total: 23686938624).
+[W915 16:35:52.903757144 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 6681526272 bytes (free: 3193372672, total: 23686938624).
+[W915 16:35:56.471971952 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 6891241472 bytes (free: 2765553664, total: 23686938624).
+[W915 16:35:59.114679142 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 7079985152 bytes (free: 2352414720, total: 23686938624).
+[W915 16:36:03.915638643 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 7230980096 bytes (free: 1997996032, total: 23686938624).
+[W915 16:36:07.806131743 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 7449083904 bytes (free: 1633091584, total: 23686938624).
+[W915 16:36:11.810588043 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 7633633280 bytes (free: 1245118464, total: 23686938624).
+[W915 16:36:15.920376835 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 7839154176 bytes (free: 865533952, total: 23686938624).
+[W915 16:36:19.153518372 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8071938048 bytes (free: 420937728, total: 23686938624).
+[W915 16:36:22.521464274 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8164212736 bytes (free: 8163622912, total: 23686938624).
+[W915 16:36:24.657816602 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8246001664 bytes (free: 8071348224, total: 23686938624).
+[W915 16:36:26.938944613 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8344567808 bytes (free: 7989559296, total: 23686938624).
+[W915 16:36:28.211956993 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8470396928 bytes (free: 7890993152, total: 23686938624).
+[W915 16:36:31.514919182 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8617197568 bytes (free: 7765164032, total: 23686938624).
+[W915 16:36:33.852397072 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8724152320 bytes (free: 7618363392, total: 23686938624).
+[W915 16:36:35.228683579 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8795455488 bytes (free: 7511408640, total: 23686938624).
+[W915 16:36:38.640755159 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8879341568 bytes (free: 7440105472, total: 23686938624).
+[W915 16:36:40.071910926 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 8994684928 bytes (free: 7356219392, total: 23686938624).
+[W915 16:36:43.451131205 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 9101639680 bytes (free: 7240876032, total: 23686938624).
+[W915 16:36:45.984733364 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 9200205824 bytes (free: 7133921280, total: 23686938624).
+[W915 16:36:48.488531142 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 9307160576 bytes (free: 7035355136, total: 23686938624).
+[W915 16:36:49.003377027 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 9307160576 bytes (free: 7039549440, total: 23686938624).
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/ubuntu/fly-critic/flycritic/llm/eval_baselines.py", line 14, in <module>
+    t0 = time.time(); r = evaluate_baseline(kind, env, llm, episodes=a.episodes); res[kind] = r
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/flycritic/llm/baselines.py", line 49, in evaluate_baseline
+    _, tl = llm(prompts); a = tl.argmax(1)
+            ^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/flycritic/llm/features.py", line 73, in __call__
+    h, tl = self._forward([texts[i] for i in miss])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/flycritic/llm/features.py", line 48, in _forward
+    out = self.model(**enc, output_hidden_states=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 465, in forward
+    logits = self.lm_head(hidden_states[:, slice_indices, :])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fly-critic/.venv/lib/python3.12/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 8.67 GiB. GPU 0 has a total capacity of 22.06 GiB of which 6.56 GiB is free. Including non-PyTorch memory, this process has 15.50 GiB memory in use. Of the allocated memory 6.24 GiB is allocated by PyTorch, and 8.95 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)

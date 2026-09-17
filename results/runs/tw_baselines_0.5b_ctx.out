@@ -1,0 +1,6 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:  28%|██▊       | 82/290 [00:00<00:00, 806.41it/s]Loading weights:  59%|█████▉    | 172/290 [00:00<00:00, 846.00it/s]Loading weights:  89%|████████▊ | 257/290 [00:00<00:00, 825.18it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 838.84it/s]
+model 0.5b | oracle expected reward/episode 105.0 | random ~-6.4
+longctx   {"reward": 14.8, "reward_post": 7.62, "optimal_rate": 0.13}  (35540s)
+rag       {"reward": 21.02, "reward_post": 10.83, "optimal_rate": 0.2}  (6162s)
