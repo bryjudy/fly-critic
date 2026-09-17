@@ -4,13 +4,13 @@ A memory module for frozen neural networks, copied from the fruit fly's mushroom
 
 I pulled the mushroom body circuit out of the MaleCNS v1.0 connectome (the full male fruit fly nervous system released on 2026-09-03) and used it as the plasticity system of a small frozen transformer. The circuit gives you three things - a sparse address code over about 2,000 cells, a set of adjustable wires from that code to actions, and 15 compartments with different memory lifetimes that decide what gets written and how long it lasts. The transformer's own weights never change at test time. Only those wires do, driven by a dopamine-like signal, live, during use.
 
-Then I tried to break it. Odour tasks with rule reversals, ablations, head-to-heads against in-context RL and learned plasticity, a non-stationary bandit, Dark Room, a tool-routing task on frozen Qwen models up to 7B, POPGym, and Split-CIFAR-100. The full writeup with figures is in [report/REPORT.md](report/REPORT.md). Paper: preprint in preparation.
+Then I tried to break it. Odor tasks with rule reversals, ablations, head-to-heads against in-context RL and learned plasticity, a non-stationary bandit, Dark Room, a tool-routing task on frozen Qwen models up to 7B, POPGym, and Split-CIFAR-100. The full writeup with figures is in [report/REPORT.md](report/REPORT.md). Paper: preprint in preparation.
 
 ## Headline results
 
 | test | fly module | what it is up against |
 |---|---|---|
-| odour go/no-go with reversal, dopamine as the only teacher (oracle 33.5) | 17.3 at 400 iters, 21.6 at 1200 | in-context RL, TD critic, learned plasticity on hidden state: all 0 |
+| odor go/no-go with reversal, dopamine as the only teacher (oracle 33.5) | 17.3 at 400 iters, 21.6 at 1200 | in-context RL, TD critic, learned plasticity on hidden state: all 0 |
 | same, compartment ablation | 17.3 with 15 compartments | 12.8 with one shared timescale, 6.3 with one compartment |
 | same, learned modulator on the fly architecture | 28.2 | fixed connectome dopamine 21.6 |
 | non-stationary 10-arm bandit (oracle 180) | 136.7 | in-context RL 99.5, tuned sliding-window UCB 140 |
@@ -23,7 +23,7 @@ The last two rows are negative results and I am keeping them in. They mark exact
 
 ## What the fly contributed, and what it did not
 
-Not the wiring. Shuffling the connectome's synapses costs about one point, a random expansion of the same size does as well as the real one, and a learned 15-channel dopamine signal beats the connectome's fixed one (28.2 vs 21.6). What survived every ablation is the architecture - the sparse conjunctive expansion code, compartmentalised fast weights, and a spread of memory lifetimes with good priors. Take away any of the three and most of the effect goes.
+Not the wiring. Shuffling the connectome's synapses costs about one point, a random expansion of the same size does as well as the real one, and a learned 15-channel dopamine signal beats the connectome's fixed one (28.2 vs 21.6). What survived every ablation is the architecture - the sparse conjunctive expansion code, compartmentalized fast weights, and a spread of memory lifetimes with good priors. Take away any of the three and most of the effect goes.
 
 That architecture is built to forget on a schedule. It wins when the world changes under the agent and loses when nothing old ever becomes wrong, which is why it matches a hand-tuned bandit algorithm and then collapses on class-incremental CIFAR while its freezing-based cousin FlyModel does well. The two are one design choice apart.
 
@@ -36,7 +36,7 @@ uv sync
 uv run python connectome/fetch_mb.py            # pulls the right-hemisphere mushroom body from neuPrint (no token needed) -> data/mb_R.npz
 ```
 
-`data/mb_R.npz` is included, so you can skip the fetch. The odour tasks and ablations:
+`data/mb_R.npz` is included, so you can skip the fetch. The odor tasks and ablations:
 
 ```
 uv run python -m flycritic.train --env choice --critic mb --no_feat --pre kc --iters 400 --seed 0 --tag ch_mb_nofeat_kc_s0      # dopamine only, KC fast weights
@@ -77,11 +77,11 @@ A note on compute. The fast-weight replay is memory hungry - about 5 GB of GPU m
 - `connectome/fetch_mb.py` - extracts PNs, Kenyon cells, MBONs, dopamine neurons and compartment-resolved synapse counts from neuPrint
 - `flycritic/mb.py` - the mushroom body critic (sparse code, compartment-gated depression, reward-prediction-error dopamine)
 - `flycritic/model.py` - the transformer with the dopamine-gated fast-weight head, plus the learned and hybrid modulators
-- `flycritic/env.py` - odour tasks (go/no-go with reversal, context-dependent variant, a parked gridworld)
+- `flycritic/env.py` - odor tasks (go/no-go with reversal, context-dependent variant, a parked gridworld)
 - `flycritic/train.py`, `evaluate.py`, `aggregate.py`, `figures.py` - PPO outer loop, evaluation, tables, plots
 - `flycritic/bench.py` - non-stationary bandit and Dark Room, with classical baselines
 - `flycritic/llm/` - ToolWorld, frozen-LLM features, the bridge into the module, long-context and retrieval baselines
-- `flycritic/popgym/` - vectorised POPGym envs, GRU / FFM / fly memory modules under one PPO trainer, published reference numbers
+- `flycritic/popgym/` - vectorized POPGym envs, GRU / FFM / fly memory modules under one PPO trainer, published reference numbers
 - `flycritic/cl/` - Split-CIFAR-100 pipeline with fine-tune, EWC, replay, FlyModel, our module, and a joint upper bound
 - `flycritic/body.py` - a working harness on the MuJoCo fruit fly body (not trained to walk - see the report)
 - `report/` - the writeup and figures
@@ -103,3 +103,9 @@ Seed variance is higher than the baselines' in every experiment. The LLM result 
 ## License
 
 MIT. See [LICENSE](LICENSE). Cite with [CITATION.cff](CITATION.cff).
+
+## demo video
+
+`media/demo_odor_reversal.mp4` shows one episode of the dopamine-only agent - the Kenyon cells lighting up for each odor, the dopamine burst per compartment after each outcome, the fast weights changing, and the agent switching which odor it approaches after the rules flip at trial 40. Render your own from any checkpoint with `uv run python -m flycritic.viz --ckpt runs/<tag>/ckpt.pt --out demo.mp4`.
+
+![demo frame](media/demo_odor_reversal_frame.png)

@@ -34,11 +34,11 @@ class MushroomBody(nn.Module):
             for k in range(W_pk.shape[1]): W_pk[:, k] = rng.permutation(W_pk[:, k])
             M = M[:, rng.permutation(M.shape[1])][:, :, rng.permutation(M.shape[2])]
             dan_comp = dan_comp[:, rng.permutation(dan_comp.shape[1])]
-        # PN->KC: normalise each KC's olfactory input to unit sum FIRST ...
+        # PN->KC: normalize each KC's olfactory input to unit sum FIRST ...
         W_pk = W_pk / np.maximum(W_pk.sum(0, keepdims=True), 1)
         if extra_pn:  # ... then add context channels (cf. the fly's visual/thermal KC inputs) as an ABSOLUTE weight
-            # ctx_gain on a random ctx_frac of KCs, so context nudges near-threshold odour-driven KCs over the line
-            # and the top-k code becomes an odour x context conjunction without swamping odour identity
+            # ctx_gain on a random ctx_frac of KCs, so context nudges near-threshold odor-driven KCs over the line
+            # and the top-k code becomes an odor x context conjunction without swamping odor identity
             ext = (rng.random((extra_pn, W_pk.shape[1])) < ctx_frac).astype(np.float32) * ctx_gain
             W_pk = np.concatenate([W_pk, ext], 0)
         if collapse:
@@ -48,12 +48,12 @@ class MushroomBody(nn.Module):
         self.P, self.K, self.M, self.C = P, K, Mn, C
         self.n_active = max(1, int(sparsity * K))
         self.register_buffer("W_pk", torch.tensor(W_pk))
-        # KC->MBON baseline weight (K, M), each MBON's input normalised to 1; compartment fractions Fc (M, C)
+        # KC->MBON baseline weight (K, M), each MBON's input normalized to 1; compartment fractions Fc (M, C)
         # scaled so a random KC code (n_active cells at ~1) drives each MBON to ~1 at baseline
         Wkm = M.sum(2); self.register_buffer("W0", torch.tensor(Wkm / np.maximum(Wkm.sum(0, keepdims=True), 1) / sparsity))
         Fc = M.sum(0); Fc = Fc / np.maximum(Fc.sum(1, keepdims=True), 1e-9)
         self.register_buffer("Fc", torch.tensor(Fc))
-        # DAN -> compartment drive, split by family, normalised per compartment
+        # DAN -> compartment drive, split by family, normalized per compartment
         pam = (dan_comp * (dan_fam == 0)[:, None]).sum(0); ppl = (dan_comp * (dan_fam == 1)[:, None]).sum(0)
         tot = np.maximum(pam + ppl, 1e-9)
         self.register_buffer("pam_frac", torch.tensor((pam / tot).astype(np.float32)))  # (C,)

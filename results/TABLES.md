@@ -1,8 +1,8 @@
 # Aggregated results
 
-Produced by the three aggregators on the full run set. Oracle for the odour tasks is 33.5 per episode, for ToolWorld 105.
+Produced by the three aggregators on the full run set. Oracle for the odor tasks is 33.5 per episode, for ToolWorld 105.
 
-## Odour tasks, head-to-heads, ToolWorld (flycritic.aggregate)
+## Odor tasks, head-to-heads, ToolWorld (flycritic.aggregate)
 
 ```
 config                   seeds  iters        R/episode     pre    post  punish hits

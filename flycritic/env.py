@@ -1,4 +1,4 @@
-"""OdorGrid: vectorised gridworld where odours (patterns over the fly's 124 PN channels) predict reward or
+"""OdorGrid: vectorized gridworld where odors (patterns over the fly's 124 PN channels) predict reward or
 punishment, and the contingency reverses mid-episode. Torch, batch-first, no gym dependency."""
 import torch
 
@@ -8,7 +8,7 @@ class OdorGrid:
         self.B, self.P, self.G, self.T, self.lam, self.noise, self.reversal = B, n_pn, grid, T, lam, noise, reversal
         self.device = device; self.n_actions = 5
         g = torch.Generator().manual_seed(seed)
-        # odour dictionary: each odour excites ~12% of glomeruli with graded intensity (fixed across training)
+        # odor dictionary: each odor excites ~12% of glomeruli with graded intensity (fixed across training)
         mask = (torch.rand(n_odors, n_pn, generator=g) < 0.12).float()
         self.odors = (mask * torch.rand(n_odors, n_pn, generator=g)).to(device)
         self.odors = self.odors / self.odors.norm(dim=1, keepdim=True)
@@ -69,9 +69,9 @@ class OdorGrid:
 
 
 class OdorChoice:
-    """Go/no-go conditioning (the fly T-maze in disguise). Each trial one odour is presented; action 1 = approach
-    (receive that odour's outcome: +1 / -1 / 0), action 0 = avoid (0). Three odours per episode; reward and
-    punishment odours swap at a random trial in the middle third. Odours re-drawn every episode."""
+    """Go/no-go conditioning (the fly T-maze in disguise). Each trial one odor is presented; action 1 = approach
+    (receive that odor's outcome: +1 / -1 / 0), action 0 = avoid (0). Three odors per episode; reward and
+    punishment odors swap at a random trial in the middle third. Odors re-drawn every episode."""
     def __init__(self, B, n_pn=124, T=100, n_odors=16, noise=0.05, reversal=True, device="cpu", seed=0, **kw):
         self.B, self.P, self.T, self.noise, self.reversal, self.device = B, n_pn, T, noise, reversal, device
         self.n_actions = 2
@@ -93,7 +93,7 @@ class OdorChoice:
         return self._obs()
 
     def _obs(self):
-        self.cur = torch.randint(0, 3, (self.B,), device=self.device)                    # which of the 3 odours
+        self.cur = torch.randint(0, 3, (self.B,), device=self.device)                    # which of the 3 odors
         pn = self.odors[self.ep_odor.gather(1, self.cur[:, None]).squeeze(1)]
         pn = pn + self.noise * torch.rand_like(pn)
         a1 = torch.nn.functional.one_hot(self.prev_a, self.n_actions).float()
@@ -113,10 +113,10 @@ class OdorChoice:
 
 class OdorContext(OdorChoice):
     """Context-dependent go/no-go. A binary context cue (e.g. light on/off) is shown each trial. In context 0 the
-    roles are (odour A +1, odour B -1, C 0); in context 1 they are swapped (A -1, B +1). A pure odour->valence
-    memory averages to zero here, so the agent must combine odour with context. Mid-episode reversal flips the
+    roles are (odor A +1, odor B -1, C 0); in context 1 they are swapped (A -1, B +1). A pure odor->valence
+    memory averages to zero here, so the agent must combine odor with context. Mid-episode reversal flips the
     mapping in BOTH contexts. ctx_to_kc: also feed the context to the mushroom body as 2 extra PN channels (like
-    the fly's multimodal KC inputs), so KC codes become odour x context conjunctions."""
+    the fly's multimodal KC inputs), so KC codes become odor x context conjunctions."""
     def __init__(self, B, ctx_to_kc=False, **kw):
         super().__init__(B, **kw)
         self.ctx_to_kc = ctx_to_kc

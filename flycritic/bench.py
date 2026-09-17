@@ -2,7 +2,7 @@
   Bandit    : 10-arm Bernoulli bandit, T=200, arm means re-drawn per episode, best arm flips at a random trial in the
               middle third (non-stationary). Tuned classical baselines: discounted Thompson sampling, sliding-window UCB.
   DarkRoom  : Algorithm Distillation (Laskin et al. 2022) — 9x9 grid, goal fixed for the meta-episode, agent sees only
-              its (x,y); reward 1 every step it stands on the goal; agent respawns at centre every 20 steps; T=200.
+              its (x,y); reward 1 every step it stands on the goal; agent respawns at center every 20 steps; T=200.
   KeyToDoor : AD's Dark Key-to-Door — 9x9, must reach key (+1 once) then door (+1 once) per 40-step episode; T=200.
 All expose the same interface as flycritic/env.py (reset/step -> obs{'pn','vec'}, r, done, info{post_reversal,optimal})
 so every agent config in flycritic.train runs unchanged. `pn` is a fixed random sparse expansion of the observation
@@ -15,7 +15,7 @@ def _pn_proj(in_dim, n_pn, g):
 
 class _Base:
     n_pn = 124
-    def _pn(self, feat):                                   # (B, in) -> nonneg (B,124) with norm 3 like odours
+    def _pn(self, feat):                                   # (B, in) -> nonneg (B,124) with norm 3 like odors
         x = torch.nn.functional.softplus(feat @ self.Wpn)
         return x / (x.norm(dim=1, keepdim=True) + 1e-6) * 3.0
 

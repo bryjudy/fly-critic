@@ -9,39 +9,39 @@ male *Drosophila* connectome (MaleCNS v1.0, released 2026-09-03 by Google Resear
 Cambridge Connectomics Group) and use it, unmodified in structure, as the plasticity-gating system of a small
 transformer agent. The circuit's 15 dopamine compartments, each with its own learning rate and memory lifetime,
 gate a three-factor Hebbian fast-weight layer inside the transformer. The transformer's slow weights are trained by
-PPO across episodes; within an episode, only dopamine changes anything. On a go/no-go odour task with a mid-episode
+PPO across episodes; within an episode, only dopamine changes anything. On a go/no-go odor task with a mid-episode
 contingency reversal, a frozen transformer whose only teaching signal is this dopamine reaches 17.3 +/- 0.1 of a
 33.5 ceiling (three seeds), while a scalar TD critic, a no-critic baseline, and the same rule applied to the
 transformer's own hidden state all remain at chance. Ablating the compartment structure removes most of the effect
 (15 compartments 17.3 -> uniform timescales 12.8 -> single compartment 6.3), and the single-compartment agent
-cannot relearn after the reversal at all. The outer loop rediscovers the fly's division of labour on its own,
+cannot relearn after the reversal at all. The outer loop rediscovers the fly's division of labor on its own,
 assigning short lifetimes and strong approach gain to the gamma compartments and ~10^4-step lifetimes to the
 alpha/beta compartments. Shuffling the connectome's specific synapses while preserving compartment structure costs
 only ~1 point, and a head-to-head at 1200 iterations shows a PPO-learned 15-channel modulator *outperforms* the
 connectome's fixed dopamine routing (28.2 +/- 0.4 vs 21.6 +/- 5.3) provided it is given the fly's Kenyon-cell
 expansion, while the same learned modulator on the transformer's own hidden state, and in-context RL at equal
 compute, both stay at zero. The connectome's contribution is therefore architectural: the sparse conjunctive
-expansion code, compartmentalised multi-timescale fast weights, and good lifetime priors. Its specific dopamine
-wiring is a training-free initialisation, not a superior teacher. On external benchmarks with tuned baselines the
+expansion code, compartmentalized multi-timescale fast weights, and good lifetime priors. Its specific dopamine
+wiring is a training-free initialization, not a superior teacher. On external benchmarks with tuned baselines the
 module reaches a hand-designed non-stationary bandit algorithm (136.7 vs 140) where in-context RL plateaus at
 99.5 with equal training, and edges in-context RL on Dark Room (38.0 vs 31.5). Attached to a frozen 0.5B language
 model on a non-stationary tool-routing task, it beats the trained in-context head, retrieval, and long-context
 prompting (24.1 vs 17.6 / 21.0 / 14.8), though all remain far from the 105 oracle. On a
-context-dependent variant where the same odour is rewarded in one context and punished in another, no agent learns
+context-dependent variant where the same odor is rewarded in one context and punished in another, no agent learns
 when the context cue reaches only the transformer, even with the critic's valence fully visible; routing the cue
-into the Kenyon cells, as the fly does with its visual and thermosensory inputs, makes the sparse code an odour x
+into the Kenyon cells, as the fly does with its visual and thermosensory inputs, makes the sparse code an odor x
 context conjunction and the same circuit reaches 57.1 of a 66 ceiling (2 seeds).
 
 ## 1. Why the fly, and why this circuit
 
-The mushroom body is the best-characterised reinforcement circuit in any animal. Odours arrive on ~50 olfactory
+The mushroom body is the best-characterized reinforcement circuit in any animal. Odors arrive on ~50 olfactory
 channels (projection neurons, PNs), are expanded into a very sparse code across ~2,000 Kenyon cells (KCs) per
 hemisphere under global feedback inhibition from the APL neuron, and are read out by ~35 types of mushroom body
 output neurons (MBONs) whose activity biases approach or avoidance. About 150 dopamine neurons per hemisphere,
 from the PAM (largely reward) and PPL1 (largely punishment) clusters, tile the KC axons into 15 anatomical
 compartments. Dopamine released in a compartment depresses the KC->MBON synapses that were just active there.
 Different compartments have different plasticity rates and memory lifetimes: the gamma lobe holds minutes, the
-alpha/beta lobes hold days. This is a three-factor learning rule with a compartmentalised, multi-timescale
+alpha/beta lobes hold days. This is a three-factor learning rule with a compartmentalized, multi-timescale
 eligibility structure, and it is exactly the machinery a frozen network lacks.
 
 MaleCNS v1.0 provides all of this at synapse resolution with per-compartment ROI labels and predicted
@@ -57,7 +57,7 @@ the PAM/PPL1 share per compartment reproduces the literature (gamma1, alpha2, al
 gamma3-5, beta, beta' lobes: reward).
 
 **Critic** (`flycritic/mb.py`). KC code = top 5% of `W_pn_kc x` (APL-style inhibition), active cells ~1.
-MBON_j = sum_k KC_k W_kj with W initialised from connectome synapse counts (each MBON's input normalised so a
+MBON_j = sum_k KC_k W_kj with W initialized from connectome synapse counts (each MBON's input normalized so a
 random code drives it to ~1). Valence v = sum_j s_j MBON_j, where s_j = +1 for MBONs in PPL1-dominated
 compartments (approach-driving, depressed by punishment) and -1 for PAM-dominated (avoidance-driving). Dopamine
 per compartment: reward-prediction error delta = r - v, with relu(delta) routed to PAM-innervated compartments and
@@ -75,10 +75,10 @@ failed). Slow weights, alpha, eta, tau trained by PPO with gradients flowing thr
 a single compartment; no plastic layer (in-context learning only); and the fly dopamine gating hidden-state
 fast weights instead of KC fast weights.
 
-**Task** (`flycritic/env.py::OdorChoice`). 100 trials per episode. Three odours (patterns over the 124 real PN
-channels) drawn fresh each episode: one +1, one -1, one 0. Each trial presents one odour; action 1 = approach
+**Task** (`flycritic/env.py::OdorChoice`). 100 trials per episode. Three odors (patterns over the 124 real PN
+channels) drawn fresh each episode: one +1, one -1, one 0. Each trial presents one odor; action 1 = approach
 and receive its outcome, action 0 = avoid and receive 0. At a random trial in the middle third the +1 and -1
-odours swap. Oracle = 33.5/episode.
+odors swap. Oracle = 33.5/episode.
 
 ## 3. Results
 
@@ -96,7 +96,7 @@ odours swap. Oracle = 33.5/episode.
 
 Evaluated on fresh episodes, the dopamine-only agent shows a textbook reversal curve: ~0.2 reward/step before
 the swap, a perseveration dip to -0.2 immediately after (stale fast weights keep approaching the old reward
-odour), recovery over ~20 trials. Agents that can read MBON valence directly recover in ~10.
+odor), recovery over ~20 trials. Agents that can read MBON valence directly recover in ~10.
 (`runs/compare_v2.png`.)
 
 ### 3.2 The compartment structure is what does the work
@@ -109,10 +109,10 @@ odour), recovery over ~20 trials. Agents that can read MBON valence directly rec
 | 1 compartment | 6.3 +/- 0.2 | **-0.9** | 23.6 |
 
 Collapsing to one compartment loses two thirds of the effect and abolishes reversal learning (post-reversal
-reward is negative: the agent keeps approaching the old reward odour). Keeping 15 compartments but a single
+reward is negative: the agent keeps approaching the old reward odor). Keeping 15 compartments but a single
 timescale recovers half of the gap; the diversity of lifetimes supplies the rest.
 
-### 3.3 The outer loop rediscovers the fly's division of labour
+### 3.3 The outer loop rediscovers the fly's division of labor
 ![](fig6_compartments.png)
 
 Starting from the biological priors, PPO on the slow parameters drove the gamma compartments (gamma1, gamma2,
@@ -137,12 +137,12 @@ mechanism; the visible-output upper bound (30) remains out of reach within this 
 ### 3.6 Context-dependent valence: the conjunctive KC code is necessary
 ![](fig5_context.png)
 
-`OdorContext`: a binary context cue is shown each trial; in context 1 the odour valences are inverted. A pure
-odour->value memory averages to zero here. Episodes have 200 trials (oracle ~66) with a mid-episode reversal.
+`OdorContext`: a binary context cue is shown each trial; in context 1 the odor valences are inverted. A pure
+odor->value memory averages to zero here. Episodes have 200 trials (oracle ~66) with a mid-episode reversal.
 v1 of this task (context fed only to the transformer, or weakly into KCs) was a null for every agent, including
 the no-critic baseline. v2 drives the context cue into a random 30% of KCs at an absolute weight of 0.1 (after
-per-KC normalisation of olfactory input), which makes the sparse code a genuine odour x context conjunction:
-the same odour's code overlaps 41% with itself across contexts and 18% with other odours.
+per-KC normalization of olfactory input), which makes the sparse code a genuine odor x context conjunction:
+the same odor's code overlaps 41% with itself across contexts and 18% with other odors.
 
 | agent | reward/episode (last 100 iters) | seeds |
 |---|---|---|
@@ -152,7 +152,7 @@ the same odour's code overlaps 41% with itself across contexts and 18% with othe
 | MB dopamine only, context -> transformer only | 0 | 2 |
 | no critic | 0 | 2 |
 
-Two things follow. First, the transformer cannot combine a context cue with the critic's odour valence on its own
+Two things follow. First, the transformer cannot combine a context cue with the critic's odor valence on its own
 within this budget: with context available only as a transformer input, performance is zero even when MBON valence
 is fully visible. Second, when the fly-style expansion layer receives the context cue, the same circuit solves the
 task, both as a visible critic (86% of ceiling) and, more slowly, as a dopamine-only teacher of KC->action fast
@@ -191,20 +191,20 @@ Four conclusions, two of them against our own initial framing:
    28.2 vs 21.6, with far lower seed variance (0.4 vs 5.3). The reward-prediction-error -> PAM/PPL1 ->
    compartment routing we lifted from the connectome is therefore *not* the active ingredient; a 15-channel
    signal learned by PPO through the plasticity does better. Our fixed circuit is best read as a strong,
-   training-free initialisation of that signal.
+   training-free initialization of that signal.
 4. **The fly's timescale priors help the learned modulator too.** Initialising eta/tau from the compartment
    priors gives +1.4 at 1200 iterations and +4.7 at 400, i.e. faster learning and a slightly higher plateau.
 
 Two follow-ups sharpen this. (5) Replacing the connectome's PN->KC wiring with a size-matched random sparse
 expansion under the best learned-modulator configuration gives 28.5 +/-0.2 vs 28.2 +/- 0.4: the specific input
 wiring contributes nothing measurable once the modulator is learned, consistent with 3.4. (6) The hybrid, which
-starts from the connectome's dopamine routing and learns a residual correction initialised at zero, reaches
+starts from the connectome's dopamine routing and learns a residual correction initialized at zero, reaches
 28.9 +/-0.4, i.e. PPO repairs the fixed circuit's shortfall (21.6 -> 28.9) and lands where the fully learned
-modulator does. The fixed circuit is a usable initialisation but confers no advantage over learning from scratch.
+modulator does. The fixed circuit is a usable initialization but confers no advantage over learning from scratch.
 
 Together with 3.2 and 3.6, the decomposition is now clear. What the mushroom body contributes that a generic
 plastic transformer lacks is (i) the sparse, high-dimensional, conjunctive Kenyon-cell code as the presynaptic
-side of the plastic synapses (learned_h = 0, learned_kc = 26.8; context task 0 vs 57), (ii) compartmentalised
+side of the plastic synapses (learned_h = 0, learned_kc = 26.8; context task 0 vs 57), (ii) compartmentalized
 fast weights with a diversity of memory lifetimes (1 compartment 6.3, uniform 12.8, full 17.3), and (iii) good
 priors on those lifetimes. What it does *not* contribute is a better teaching signal than gradient descent can
 learn: the connectome's specific dopamine wiring is a reasonable prior, not a superior mechanism.
@@ -223,16 +223,16 @@ connectome dopamine. The KC expansion here is a fixed random projection of the o
 
 | task | in-context RL (best variant, 3 seeds) | fixed connectome dopamine | learned modulator + KC (3 seeds) | classical best |
 |---|---|---|---|---|
-| bandit (1500 iters) | 99.5 +/- 2.3 (6-layer 95.8, high-lr 87.2) | not run (cancelled for compute) | **136.7 +/- 12.9** (150 / 140 / 119) | 140 (SW-UCB); 123 (disc. TS); 62 random; 180 oracle |
+| bandit (1500 iters) | 99.5 +/- 2.3 (6-layer 95.8, high-lr 87.2) | not run (canceled for compute) | **136.7 +/- 12.9** (150 / 140 / 119) | 140 (SW-UCB); 123 (disc. TS); 62 random; 180 oracle |
 | dark room (1000 iters) | 31.5 +/- 4.3 (high-lr 20.2) | 38.0 (1 seed) | **38.0 +/- 4.9** (31 / 40 / 43) | n/a |
 
 Reading. On the bandit the module lands at the tuned classical method (136.7 vs 140, with seeds at 150, 140 and
 119) and 37 points above the best in-context transformer, which received the same 1500 iterations and three
-hyper-parameter variants. The undertrained-baseline objection does not survive here: in-context RL plateaus near
+hyperparameter variants. The undertrained-baseline objection does not survive here: in-context RL plateaus near
 100 on all eight runs. The module's seed variance is large (sd 12.9 vs 2.3), which is the same instability seen in
 3.5. On Dark Room the module beats in-context RL by ~1.3 pooled standard deviations (38.0 vs 31.5); a modest,
 consistent edge rather than a decisive one. Two low-priority configurations (fixed connectome dopamine on the
-bandit, a second Dark Room seed of it) were cancelled to free the GPU; Dark Key-to-Door was implemented but not run.
+bandit, a second Dark Room seed of it) were canceled to free the GPU; Dark Key-to-Door was implemented but not run.
 
 ### 3.9 Step 2: a frozen LLM with the module, against long-context and retrieval
 `ToolWorld`: a text contextual bandit. Six named tools, four query types with paraphrases; each type has a best
@@ -274,11 +274,11 @@ of them are far from the oracle: the module learns to route ~23% of trials optim
 frozen 0.5B features plus a fixed random projection into 124 PN channels evidently carry limited query-type
 information, and the plastic KC->tool associations saturate early (curves flatten by iteration ~150). This is a
 modest, consistent win for the module over the standard alternatives at equal LLM size, not a solved task.
-Unlike the odour tasks, the fixed connectome dopamine slightly outperforms the learned modulator here.
+Unlike the odor tasks, the fixed connectome dopamine slightly outperforms the learned modulator here.
 
 ### 3.10 POPGym
 POPGym (Morad et al., ICLR 2023) is the standard suite for memory in RL: partially observed environments where the
-agent must infer or remember state, scored by MMER (max over training of the mean episodic reward, normalised to
+agent must infer or remember state, scored by MMER (max over training of the mean episodic reward, normalized to
 roughly [-1, 1]). We target 24 of its environments: {MultiarmedBandit, RepeatPrevious, RepeatFirst, CountRecall,
 HigherLower, Autoencode, PositionOnlyCartPole, NoisyPositionOnlyCartPole} x {Easy, Medium, Hard}. Our harness
 (`flycritic/popgym/`) puts three memory modules under one variable-length PPO trainer (chunks of 128 steps, state
@@ -310,7 +310,7 @@ Easy (+0.20, where the module's three seeds split 0.998 / 0.5 / 0.6), the easy b
 this budget (Autoencode, hard bandits, hard recall). The module's seed variance is again the larger. Against the
 paper's 15M-step / 30-epoch GRU, both of our 3M / 8-epoch agents are far behind on bandits, CountRecall and
 RepeatFirst Medium, so the budget pass says nothing about published state of the art on those families. Conclusion
-for POPGym: **no takedown**. The compartmentalised fast-weight memory is competitive with a GRU as a generic RL
+for POPGym: **no takedown**. The compartmentalized fast-weight memory is competitive with a GRU as a generic RL
 memory at this budget, with a possible edge on tasks that require holding one early observation (RepeatFirst) and a
 deficit on tasks that need a precise rolling buffer (RepeatPrevious). A fair test against FFM and the published
 numbers needs the full 15M-step protocol, roughly 5x the compute spent here.
@@ -340,7 +340,7 @@ accuracy; frozen ImageNet ResNet-18 features throughout; SGD methods 5 epochs/ta
 Reading. A clean negative result for our module and a clean positive one for its cousin. FlyModel, built on the
 same sparse expansion but *freezing* the synapses it has used, keeps 43% class-incremental accuracy with 15%
 forgetting, second only to a 2,000-exemplar replay buffer and far ahead of EWC. Our module, whose defining feature is
-compartmentalised *forgetting* on fixed timescales, ends at 7-8%, i.e. it recognises roughly the most recent task
+compartmentalized *forgetting* on fixed timescales, ends at 7-8%, i.e. it recognizes roughly the most recent task
 only, marginally worse than naive fine-tuning; adding compartments or fitted gains changes nothing. This is what the
 design predicts: in class-incremental learning nothing old ever becomes wrong, so decaying memories are a pure
 liability, and the supervised dopamine (+1 true class, -1 predicted-wrong class) keeps overwriting earlier classes'
@@ -351,13 +351,13 @@ fly-critic-style decay for non-stationary control. The two are one design choice
 thing to know.
 
 ## 4. What this does and does not show
-- It does show that a connectome-derived, compartmentalised dopamine system can be the *only* teacher of a frozen
+- It does show that a connectome-derived, compartmentalized dopamine system can be the *only* teacher of a frozen
   transformer's within-episode learning, and that the compartment/timescale structure is necessary for that.
 - It does show that the standard alternatives fail at equal compute: in-context RL and learned neuromodulated
   plasticity on hidden state are both at zero after 1200 iterations.
 - It does *not* show that the connectome's dopamine wiring is a better teacher than a learned one. It is worse
   (21.6 vs 28.2) and less stable across seeds. The durable claim is about the fly's *architecture*: sparse
-  conjunctive expansion + compartmentalised multi-timescale plasticity + lifetime priors.
+  conjunctive expansion + compartmentalized multi-timescale plasticity + lifetime priors.
 - It does not show that the specific synaptic wiring matters much (small consistent edge only).
 - It does not reach the ceiling; dopamine-only is 17.3 at 400 iterations and 21.6 +/- 5.3 at 1200, still rising,
   with one of three seeds partially collapsing (3.5).
@@ -371,10 +371,10 @@ thing to know.
    (entropy floor or approach bonus).
 2. Body (`flycritic/body.py`): DeepMind `flybody` walk_on_ball with this critic gating KC->motor fast weights. The
    harness trains end to end (0.22M params, 49 env steps/s single-process on an M5). Stable walking needs ~1e8
-   environment steps: ~600 h at this rate, ~1-3 days with vectorised multiprocess environments on a 32-64 core box.
+   environment steps: ~600 h at this rate, ~1-3 days with vectorized multiprocess environments on a 32-64 core box.
 3. Agent: the critic gating memory writes and retry decisions in a long-running LLM agent.
 4. (done, 3.7) Random expansion and hybrid follow-ups.
-5. A harder benchmark family beyond odour go/no-go, and a size-matched comparison against the 2025
+5. A harder benchmark family beyond odor go/no-go, and a size-matched comparison against the 2025
    Hebbian/gradient-plasticity transformer of Chen et al. on their own tasks.
 
 ## Reproduce

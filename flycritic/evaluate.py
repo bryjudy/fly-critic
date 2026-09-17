@@ -1,5 +1,5 @@
 """Compare trained agents: reward curves aligned to the reversal, learning speed after reversal,
-punishment avoidance, and (for MB critics) what the circuit itself believes about each odour.
+punishment avoidance, and (for MB critics) what the circuit itself believes about each odor.
 usage: uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0 --episodes 20
 """
 import argparse, json, torch, numpy as np
@@ -44,7 +44,7 @@ def evaluate(tag, episodes=20, device="cpu"):
             pre, post = R[i, :trev[i]], R[i, trev[i]:]
             pre_hits += (pre > 0).sum() / len(pre); post_hits += (post > 0).sum() / len(post)
             pre_pun += (pre < 0).sum() / len(pre); post_pun += (post < 0).sum() / len(post)
-            # steps after reversal until first punishment (walking into the old reward odour) and first reward
+            # steps after reversal until first punishment (walking into the old reward odor) and first reward
             p = np.where(post < 0)[0]; r = np.where(post > 0)[0]
             first_post_punish.append(p[0] if len(p) else len(post)); first_post_reward.append(r[0] if len(r) else len(post))
     n = episodes * env.B

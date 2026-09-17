@@ -63,7 +63,7 @@ class Agent(nn.Module):
         else:
             if critic in ("mb", "shuffled"):
                 C = mb.C; eta0 = mb.log_eta.exp().detach().tolist(); tau0 = mb.log_tau.exp().detach().tolist()
-            elif critic == "hybrid":    # connectome RPE routing as initialisation + learned residual correction
+            elif critic == "hybrid":    # connectome RPE routing as initialization + learned residual correction
                 C = mb.C; eta0 = mb.log_eta.exp().detach().tolist(); tau0 = mb.log_tau.exp().detach().tolist()
                 self.mod = nn.Sequential(nn.Linear(d + 2 + C, 64), nn.Tanh(), nn.Linear(64, C))
                 nn.init.zeros_(self.mod[2].weight); nn.init.zeros_(self.mod[2].bias)

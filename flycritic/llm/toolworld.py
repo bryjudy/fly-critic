@@ -1,4 +1,4 @@
-"""ToolWorld: vectorised TEXT contextual-bandit with non-stationarity, for a frozen LLM + plastic module.
+"""ToolWorld: vectorized TEXT contextual-bandit with non-stationarity, for a frozen LLM + plastic module.
 
 B parallel episodes, T trials each. 6 named tools, 4 query types (each with several paraphrases). Per episode,
 each query type has one BEST tool (success prob 0.9); other tools succeed with prob U(0.1, 0.3). Reliabilities

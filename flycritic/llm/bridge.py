@@ -1,5 +1,5 @@
 """LLM hidden state -> the fly critic's 124 'PN' channels.
-Fixed random Gaussian projection (seeded), softplus, then rescaled to L2 norm 3.0 (the OdorChoice odour norm), so
+Fixed random Gaussian projection (seeded), softplus, then rescaled to L2 norm 3.0 (the OdorChoice odor norm), so
 MushroomBody.kenyon() can be reused unchanged. Nothing here is trained."""
 import torch, torch.nn.functional as F
 n_pn = 124

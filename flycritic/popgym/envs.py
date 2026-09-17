@@ -1,9 +1,9 @@
-"""POPGym vectorised environments for fly-critic.
+"""POPGym vectorized environments for fly-critic.
 
 make_vec(env_name, B, seed) -> VecPOP: B synchronous POPGym envs with
   * observation flattening: each Discrete / MultiDiscrete component / Tuple part is one-hot; Box is passed through
     (scaled by the space bounds); the previous action (one-hot per component) and previous reward are appended;
-  * factorised actions: Discrete -> one categorical; MultiDiscrete -> one categorical per component;
+  * factorized actions: Discrete -> one categorical; MultiDiscrete -> one categorical per component;
   * auto-reset with per-env `done` flags returned from step();
   * a fixed random sparse projection of the flattened obs to 124 "PN" channels (as in flycritic/bench.py), so the fly
     memory's Kenyon-cell expansion can be used unchanged.

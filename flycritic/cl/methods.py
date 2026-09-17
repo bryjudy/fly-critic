@@ -73,14 +73,14 @@ class FlyModel:
     sparse random binary expansion (each KC samples a random subset of inputs), top-k winner-take-all (~5%),
     associative Hebbian weights KC->class updated ONLY in the column of the current class ("partial freezing":
     weights of other classes' output units are never touched, so old associations cannot be overwritten).
-    Prediction = argmax_c  code . W[:, c] / n_c  (frequency-normalised)."""
+    Prediction = argmax_c  code . W[:, c] / n_c  (frequency-normalized)."""
     def __init__(self, d, n_classes, K=2045, sparsity=0.05, fan_in=0.1, seed=0, **kw):
         g = torch.Generator().manual_seed(seed)
         self.proj = (torch.rand(d, K, generator=g) < fan_in).float()      # binary random projection
         self.k = max(1, int(sparsity * K)); self.W = torch.zeros(K, n_classes); self.n = torch.zeros(n_classes)
         self.mu = None
     def code(self, x):
-        x = x - (self.mu if self.mu is not None else 0)                   # centre features (running mean of seen data)
+        x = x - (self.mu if self.mu is not None else 0)                   # center features (running mean of seen data)
         h = x @ self.proj; thr = h.topk(self.k, dim=1).values[:, -1:]; return (h >= thr).float()
     def train_task(self, x, y, task_id, classes):
         self.mu = x.mean(0) if self.mu is None else 0.5 * (self.mu + x.mean(0))

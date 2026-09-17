@@ -15,9 +15,9 @@ agent. The dopamine it emits, per compartment, gates a three-factor Hebbian fast
 Slow weights learn by PPO across episodes; fast weights learn online within an episode, only when dopamine says so.
 
 ## The test
-`OdorGrid`: 7x7 grid, three odour sources whose smells are patterns over the fly's real 124 PN channels.
-One odour = +1, one = -1, one neutral. Mid-episode the reward and punishment odours swap. Every episode the
-odours are re-drawn, so the agent must learn *within* the episode which smell to chase.
+`OdorGrid`: 7x7 grid, three odor sources whose smells are patterns over the fly's real 124 PN channels.
+One odor = +1, one = -1, one neutral. Mid-episode the reward and punishment odors swap. Every episode the
+odors are re-drawn, so the agent must learn *within* the episode which smell to chase.
 
 Four agents, identical transformer (0.63M params), differing only in what gates the plastic layer:
 | critic   | dopamine source |
@@ -33,7 +33,7 @@ Metrics: reward/step before and after reversal, steps to first post-reversal rew
 ## Layout
 - `connectome/fetch_mb.py` — pulls the MB circuit from neuPrint (no token needed) -> `data/mb_R.npz`
 - `flycritic/mb.py` — the critic (KC sparse code, compartment-gated depression, per-compartment eta/tau, RPE -> DANs)
-- `flycritic/env.py` — OdorGrid (vectorised torch)
+- `flycritic/env.py` — OdorGrid (vectorized torch)
 - `flycritic/model.py` — transformer + dopamine-gated plastic head
 - `flycritic/train.py` — PPO; `flycritic/evaluate.py` — comparison + reversal-aligned plot
 - `runs/<tag>/` — log.jsonl, ckpt.pt
@@ -46,13 +46,13 @@ uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0
 ```
 
 ## Status
-- 2026-09-11: circuit extracted; unit test shows one-shot valence learning, generalisation stays odour-specific,
+- 2026-09-11: circuit extracted; unit test shows one-shot valence learning, generalization stays odor-specific,
   fast compartments forget over ~300 steps while slow ones hold.
 - 2026-09-11 RESULT (OdorChoice, 600 iters, seed 0, eval on 10x64 fresh episodes; oracle = 0.33 R/step):
 
   | agent | R/step pre-reversal | R/step post | punish rate post | mechanism |
   |---|---|---|---|---|
-  | mb (real connectome) | 0.28 | 0.27 | 0.03 | MB learns odour values online, feeds MBON/valence to transformer |
+  | mb (real connectome) | 0.28 | 0.27 | 0.03 | MB learns odor values online, feeds MBON/valence to transformer |
   | shuffled connectome | 0.32 | 0.28 | 0.02 | same |
   | scalar TD critic | 0.00 | 0.00 | 0.22 | chance |
   | none (in-context only) | 0.00 | 0.00 | 0.14 | chance |
@@ -83,7 +83,7 @@ uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0
   | scalar / none | 0.00 | 0.00 | 0.22 / 0.14 |
 
   The dopamine-only KC agents show a textbook reversal curve: ~0.2 before the swap, a *perseveration dip* to
-  -0.2 right after (stale fast weights keep approaching the old reward odour), then recovery over ~20 trials.
+  -0.2 right after (stale fast weights keep approaching the old reward odor), then recovery over ~20 trials.
   Visible-output agents recover in ~10. This is the first configuration where "dopamine gates what the model
   itself learns" is doing the work.
 
@@ -98,7 +98,7 @@ uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0
 
   Real wiring beat shuffled on all 3 seeds (17.8/15.6, 18.6/18.2, 18.7/17.4) but the margin is small; call it
   "consistent, modest, not yet conclusive". The robust finding is architectural: sparse KC code + compartment-
-  gated dopamine plasticity lets a frozen transformer learn odour->action online with dopamine as the ONLY
+  gated dopamine plasticity lets a frozen transformer learn odor->action online with dopamine as the ONLY
   teaching signal, at ~half the ceiling after 400 PPO iterations (still rising at stop).
 
 - 2026-09-12 COMPARTMENT ABLATION (dopamine-only, KC fast weights, 3 seeds each, R/episode; post = after reversal):
@@ -111,14 +111,14 @@ uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0
 
   Clean result. Compartment structure matters (6 -> 13) AND the diversity of timescales matters on top (13 -> 17).
   The single-compartment agent cannot relearn after the reversal at all (post-reversal reward negative: it keeps
-  approaching the old reward odour). Multi-timescale memory is what buys reversal learning.
+  approaching the old reward odor). Multi-timescale memory is what buys reversal learning.
 
 - 2026-09-12 CONTEXT TASK (OdorContext, 2 seeds each): **null result for every agent**, including the no-critic
   baseline and the ctx_to_kc variant. All at 0.0 R/episode after 400 iters; several PPO runs collapsed to
   "never approach" (a guaranteed-zero local optimum). (Interim monitor readings of 10-12 for this task were
   misattributed — alphabetical ordering shifted as queued runs launched; they were the uniform-ablation runs.)
   As designed the task is uninformative: nobody learned it. Likely causes: (a) context enters KCs too weakly
-  (2 of 126 PN channels, then per-KC input normalisation) so KC codes for (odour, ctx0) and (odour, ctx1)
+  (2 of 126 PN channels, then per-KC input normalization) so KC codes for (odor, ctx0) and (odor, ctx1)
   overlap and the associations cancel; (b) 6 conjunctions x reversal in 100 trials is a lot; (c) meta-RL of an
   XOR-like structure is slow for the transformer too. Redesign before re-running: strong context drive into
   KCs (or a dedicated context KC population, as in the fly's visual/thermal KCs), T=200, and an approach bonus
@@ -128,7 +128,7 @@ uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0
   act 59) installs and runs; harness = learned proprioception->124 PN projection -> real MB critic -> per-compartment
   dopamine -> KC->motor fast weights inside a Gaussian PPO policy. Smoke-trained 2 min end-to-end (0.22M params).
   Throughput 49 env steps/s with 4 sequential envs on the M5 -> ~1e8 steps for walking = ~600 h here. Needs
-  vectorised multiprocess envs on a 32-64 core box (~1-3 days) — NOT attempted. flybody's pins (numpy<2) conflict
+  vectorized multiprocess envs on a 32-64 core box (~1-3 days) — NOT attempted. flybody's pins (numpy<2) conflict
   with the project lock: run via `uv run --with mujoco --with dm_control --with "git+https://github.com/TuragaLab/flybody"`.
 - 2026-09-12 CONTEXT v2 + PLATEAU: relaunched on GPU box 2 (runs-gpu2/): cx2_* (T=200, ent 0.03, ctx_frac 0.3,
   ctx_gain 0.1 -> conjunctive KC code) 5-way x 2 seeds, plus long_mb_nofeat_kc 1200 iters x 3 seeds.
@@ -234,7 +234,7 @@ uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0
   27.2 | finetune/EWC 9.1 | fly-critic 7.4-8.4 (forgetting ~65). Clean negative; written into REPORT §3.11 and §4.
 
 - 2026-09-16 22:00 ALL DONE: POPGym fly 72/72 (reruns folded in), GRU 72/72, Split-CIFAR 33/33; all boxes terminated.
-  Report §3.10/3.11/§4 final. Whole project (9/11-9/16): odour tasks, ablations, head-to-heads, bandit/DarkRoom,
+  Report §3.10/3.11/§4 final. Whole project (9/11-9/16): odor tasks, ablations, head-to-heads, bandit/DarkRoom,
   ToolWorld 0.5B/1.5B/7B, POPGym, Split-CIFAR. AWS spend roughly $120-150 total incl. idle/crash waste.
 
 ## Infra
@@ -263,6 +263,6 @@ uv run python -m flycritic.evaluate --tags mb_s0 shuffled_s0 scalar_s0 none_s0
 - Stage 3 (agent): the critic gating memory writes / retry decisions in a long-running LLM agent.
 - 3 seeds each; report mean +/- sd.  - Ablate compartment count (collapse 15 -> 1) with real wiring.
 - Harder task where the MB feature alone is insufficient (e.g. context-dependent valence, or valence that must be
-  combined with a non-odour cue) so the transformer has to *use* the critic rather than copy it.
+  combined with a non-odor cue) so the transformer has to *use* the critic rather than copy it.
 - Stage 2: MuJoCo `flybody` (DeepMind) with the same critic gating a locomotion policy.
 - Stage 3: the critic gating memory writes / retry decisions in a long-running LLM agent.

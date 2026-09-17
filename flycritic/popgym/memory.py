@@ -15,7 +15,7 @@ Three modules:
              h_t = LayerNorm(z_t) * out_gate_t + thru_t * (1 - out_gate_t)
          Defaults from the repo: memory_size m=32, context_size c=4, min_period 1, max_period 1024. State is complex.
   Fly  — the fly-critic module: 124-channel PN vector -> MushroomBody.kenyon() sparse code (2045 units, 5% active) ->
-         compartmentalised fast weights H (15 blocks, eta/tau initialised from the fly compartment priors and learnable)
+         compartmentalized fast weights H (15 blocks, eta/tau initialized from the fly compartment priors and learnable)
          read out to a 128-d output; H updated online by the three-factor rule
              H_c <- (1 - 1/tau_c) H_c + eta_c * d_c * (post (x) kc)
          where the 15-channel modulator d = tanh(MLP([h_gru, r_{t-1}, v_{t-1}])) is LEARNED (the winning config in the
