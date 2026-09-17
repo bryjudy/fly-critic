@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+runs/
+runs_*/
+*.tgz
+*.pt
+!data/mb_R.npz
+data/tw_feats*
+data/llm_cache*
+data/cifar100/
+data/cifar100_r18_*.pt
+aws/current_*
+aws/instance_*
+*.env
+.DS_Store
+._*

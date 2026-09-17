@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite it as below."
+title: "fly-critic: a connectome-derived compartmentalised memory for test-time learning in frozen networks"
+authors:
+  - family-names: Judy
+    given-names: Bryce
+type: software
+year: 2026
+repository-code: "https://github.com/bryjudy/fly-critic"
+license: MIT
+keywords:
+  - continual learning
+  - fast weights
+  - neuromodulated plasticity
+  - Drosophila mushroom body
+  - connectome
+  - reinforcement learning
