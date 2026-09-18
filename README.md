@@ -106,10 +106,19 @@ MIT. See [LICENSE](LICENSE). Cite with [CITATION.cff](CITATION.cff).
 
 ## demo videos
 
-![the mushroom body lighting up as the model learns](media/demo_brain_reversal.gif)
+![the fly brain lighting up as the model learns](media/demo_brain_reversal.gif)
 
-`media/demo_brain_reversal.mp4` (and the GIF above) is the real right-hemisphere mushroom body. Every dot is a sampled synapse position pulled from the MaleCNS v1.0 connectome (`connectome/fetch_geometry.py` -> `data/mb_geom.npz`). While the dopamine-only agent runs one episode, the Kenyon cells that code the current odor flash white, the compartment that receives dopamine bursts green (reward) or red (punishment), and synapses whose fast weight now favors approach or avoid stay tinted cyan or magenta. The rules flip at trial 40 and you can watch the punishment bursts move the memory. Render it from any checkpoint with `uv run python -m flycritic.brainviz --ckpt runs/<tag>/ckpt.pt --out demo.mp4 --gif demo.gif`.
+`media/demo_brain_reversal.mp4` (GIF above) opens on the whole fly brain, zooms into the right mushroom body, and plays one episode of the dopamine-only agent. Every dot is a real synapse or surface point pulled from the MaleCNS v1.0 connectome (`connectome/fetch_geometry.py` and `connectome/fetch_brain.py`). Kenyon cells coding the current odor flash white, the compartment receiving dopamine bursts green (reward) or red (punishment), and synapses whose fast weight now favors approach or avoid stay tinted cyan or magenta. The rules flip mid-episode and the memory moves with it.
 
-`media/demo_odor_reversal.mp4` is the same episode as a dashboard - the Kenyon cell grid, the dopamine bar per compartment, the fast-weight heatmap, and the trial-by-trial choices. Render with `uv run python -m flycritic.viz --ckpt runs/<tag>/ckpt.pt --out demo.mp4`.
+`media/demo_brain_tools.mp4` is the same brain with a frozen Qwen2.5 0.5B reading tool-routing queries. The LLM never changes. These synapses are the only thing that learns which tool to call, and they re-learn when the tools rotate.
+
+Render either from any checkpoint:
+
+```
+uv run python -m flycritic.brainviz --ckpt runs/<tag>/ckpt.pt --out demo.mp4 --gif demo.gif
+uv run python -m flycritic.brainviz --env toolworld --ckpt runs/<tag>/ckpt.pt --best_of 6 --out demo.mp4
+```
+
+`media/demo_odor_reversal.mp4` is the same odor episode as a dashboard (Kenyon cell grid, dopamine bar per compartment, fast-weight heatmap, trial-by-trial choices), from `uv run python -m flycritic.viz --ckpt runs/<tag>/ckpt.pt --out demo.mp4`.
 
 ![demo frame](media/demo_odor_reversal_frame.png)
