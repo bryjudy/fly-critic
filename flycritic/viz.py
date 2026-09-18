@@ -24,12 +24,12 @@ def run_episode(ckpt, seed=7):
             odor_idx = int(env.cur[0]); roles = env.roles[0].clone()
             logits, value, pre, x = ag.act(st, obs, dop_prev)
             p = torch.softmax(logits, -1)[0]; act = int(torch.argmax(p))
-            kc = st["mb"]["kc"][0].clone()
+            kc = st["mb"]["kc"][0].clone(); pn_in = obs["pn"][0].clone()
             obs, r, done, info = env.step(torch.tensor([act]))
             dop, _ = ag.dopamine(st, r, value); ag.plastic_update(st, pre, torch.tensor([act]), dop); dop_prev = dop
             H = st["H"][0]                                    # (C, out, K)
             frames.append(dict(t=t, odor=odor_idx, role=float(roles[odor_idx]), act=act, p_approach=float(p[1]), r=float(r[0]),
-                               kc=kc.numpy(), dop=dop[0].numpy(), H=H.sum(0).numpy(), post_rev=bool(info["post_reversal"][0]),
+                               kc=kc.numpy(), pn=pn_in.numpy(), dop=dop[0].numpy(), H=H.sum(0).numpy(), post_rev=bool(info["post_reversal"][0]),
                                t_rev=int(env.t_rev[0])))
     return frames, mb
 

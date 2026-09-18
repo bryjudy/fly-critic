@@ -104,8 +104,12 @@ Seed variance is higher than the baselines' in every experiment. The LLM result 
 
 MIT. See [LICENSE](LICENSE). Cite with [CITATION.cff](CITATION.cff).
 
-## demo video
+## demo videos
 
-`media/demo_odor_reversal.mp4` shows one episode of the dopamine-only agent - the Kenyon cells lighting up for each odor, the dopamine burst per compartment after each outcome, the fast weights changing, and the agent switching which odor it approaches after the rules flip at trial 40. Render your own from any checkpoint with `uv run python -m flycritic.viz --ckpt runs/<tag>/ckpt.pt --out demo.mp4`.
+![the mushroom body lighting up as the model learns](media/demo_brain_reversal.gif)
+
+`media/demo_brain_reversal.mp4` (and the GIF above) is the real right-hemisphere mushroom body. Every dot is a sampled synapse position pulled from the MaleCNS v1.0 connectome (`connectome/fetch_geometry.py` -> `data/mb_geom.npz`). While the dopamine-only agent runs one episode, the Kenyon cells that code the current odor flash white, the compartment that receives dopamine bursts green (reward) or red (punishment), and synapses whose fast weight now favors approach or avoid stay tinted cyan or magenta. The rules flip at trial 40 and you can watch the punishment bursts move the memory. Render it from any checkpoint with `uv run python -m flycritic.brainviz --ckpt runs/<tag>/ckpt.pt --out demo.mp4 --gif demo.gif`.
+
+`media/demo_odor_reversal.mp4` is the same episode as a dashboard - the Kenyon cell grid, the dopamine bar per compartment, the fast-weight heatmap, and the trial-by-trial choices. Render with `uv run python -m flycritic.viz --ckpt runs/<tag>/ckpt.pt --out demo.mp4`.
 
 ![demo frame](media/demo_odor_reversal_frame.png)
