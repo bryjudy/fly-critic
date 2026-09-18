@@ -19,8 +19,10 @@ def project(P, theta, center):
     x = Q[:, 0] * c - Q[:, 1] * s; depth = Q[:, 0] * s + Q[:, 1] * c
     return x, Q[:, 2], depth
 
-ODOR_STYLE = dict(title="a fruit fly's brain, as a transformer learns through it", flip="RULES FLIP")
-TOOL_STYLE = dict(title="a fruit fly's brain, teaching a frozen LLM which tool to call", flip="TOOLS ROTATE")
+ODOR_STYLE = dict(title="a fruit fly's brain, as a transformer learns through it", flip="RULES FLIP",
+                  intro="the mushroom body - where the fly learns what smells to trust")
+TOOL_STYLE = dict(title="a fruit fly's brain, teaching a frozen LLM which tool to call", flip="TOOLS ROTATE",
+                  intro="the mushroom body - the part of the fly that learns from reward")
 CREDIT = "MaleCNS v1.0 connectome  |  github.com/bryjudy/fly-critic"
 
 def caption_odor(f, T, glow_dop):
@@ -84,7 +86,7 @@ def render(frames, geom_path, out, fps=15, sub=3, spin_deg=40.0, gif=None, style
             pulse = 0.55 + 0.35 * np.sin(2 * np.pi * i / (fps * 1.6))
             ax.scatter(x, y, s=6 * (1 + 2 * u), c="#ffb347", alpha=0.10 * pulse, lw=0); ax.scatter(x, y, s=0.8 * (1 + 2 * u), c="#ffd9a0", alpha=0.85 * pulse, lw=0)
             ax.scatter(xp, yp, s=0.8, c="#ffd9a0", alpha=0.6 * pulse, lw=0)
-            cap.set_text("the mushroom body - where the fly learns what smells to trust" if u < 0.5 else "2,045 Kenyon cells, 15 dopamine compartments, every dot a real synapse")
+            cap.set_text(style["intro"] if u < 0.5 else "2,045 Kenyon cells, 15 dopamine compartments, every dot a real synapse")
             flip.set_alpha(0.0); ins.set_visible(False); return []
         ins.set_visible(True)
         f = frames[ep_i // sub]; first = (ep_i % sub == 0)
@@ -116,7 +118,7 @@ def render(frames, geom_path, out, fps=15, sub=3, spin_deg=40.0, gif=None, style
     ani = animation.FuncAnimation(fig, upd, frames=nfr, interval=1000 / fps, blit=False)
     ani.save(out, fps=fps, dpi=100, writer="ffmpeg", savefig_kwargs={"facecolor": BG}); print("->", out)
     if gif:
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", out, "-vf", "fps=10,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=96[p];[s1][p]paletteuse=dither=bayer:bayer_scale=3", gif], check=True)
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", out, "-vf", "fps=8,scale=380:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=48[p];[s1][p]paletteuse=dither=none", gif], check=True)
         print("->", gif)
 
 def run_toolworld_episode(ckpt, seed=7):
